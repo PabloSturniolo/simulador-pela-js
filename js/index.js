@@ -1,39 +1,32 @@
-class Personaje {
-    constructor(nombre, nivel, fuerza, destreza, constitucion, inteligencia, sabiduria, carisma, danio) {
-        this.nombre = nombre;
-        this.nivel = nivel;
-        this.fuerza = fuerza;
-        this.destreza = destreza;
-        this.constitucion = constitucion;
-        this.inteligencia = inteligencia;
-        this.sabiduria = sabiduria;
-        this.carisma = carisma;
-        this.danio = danio;
-    }
+const personajes = [
+    new Personaje(
+        "Pablo",
+        3,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+    ),
+    new Personaje(
+        "David",
+        3,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+    ),
+]
 
-    calcularPunteria() {
-        return Math.floor((this.fuerza - 10) / 2);
-    }
-
-    calcularDefensa() {
-        return Math.floor((this.destreza - 10) / 2);
-    }
-
-    calcularHitPoint() {
-        return (Math.floor((this.constitucion - 10) / 2) * 5 * this.nivel);
-    }
-
-    calcularMana() {
-        return (Math.floor((this.sabiduria - 10) / 2) * 5 * this.nivel);
-    }
-
-    calcularDanio() {
-        return this.danio;
-    }
-}
+const catalogoPersonajes = new CatalogoPersonajes(personajes);
+console.log("PERSONAJES ORIGINALES", catalogoPersonajes.personajes)
 
 const cantidad = Number(prompt(`INGRESE CANTIDAD DE PERSONAJES`));
-let personajes = [];
 
 for (let i = 0; i < cantidad; i++) {
     alert(`DATOS DEL PERSONAJE NUMERO ${i + 1}`);
@@ -56,7 +49,38 @@ while(personaje2 == undefined){
     personaje2 = personajes.find(x => x.nombre === nombre2);
 }
 
-calculateWinner(personaje1, personaje2);
+resolucionDeConflictosLaborales(personaje1, personaje2); // :)
+listarPersonajes();
+
+function listarPersonajes() {
+    const nodoTabla = document.getElementById("tabla")
+    catalogoPersonajes.personajes.forEach((personaje)=>{
+        const tablaElemento = document.createElement("div")
+        tablaElemento.innerHTML=`<div class="card" style="width: 18rem;">
+                                    <img src="../imagenes/personaje.jpeg" class="card-img-top" alt="imagen del personaje">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${personaje.nombre}</h5>
+                                        <p class="card-text">Clase: Programador</p>
+                                        <p class="card-text">Nivel: ${personaje.nivel}</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Fuerza: ${personaje.fuerza}</li>
+                                        <li class="list-group-item">Destreza: ${personaje.destreza}</li>
+                                        <li class="list-group-item">Constitucion: ${personaje.constitucion}</li>
+                                        <li class="list-group-item">Inteligencia: ${personaje.inteligencia}</li>
+                                        <li class="list-group-item">Sabiduria: ${personaje.sabiduria}</li>
+                                        <li class="list-group-item">Carisma: ${personaje.carisma}</li>
+                                        <li class="list-group-item">Danio: ${personaje.danio}</li>
+                                    </ul>
+                                    <div class="card-body">
+                                        <a href="#" class="btn btn-primary">Modificar</a>
+                                        <a href="#" class="btn btn-primary">Selecionar</a>
+                                    </div>
+                                </div>`
+        
+        nodoTabla.appendChild(tablaElemento);
+    })
+}
 
 function crearPersonaje() {
     const nombre = prompt(`INGRESE NOMBRE DEL PERSONAJE`);
@@ -108,7 +132,7 @@ function removeHp(hp, damage) {
     }
 }
 
-function calculateWinner(personaje1, personaje2) {
+function resolucionDeConflictosLaborales(personaje1, personaje2) {
     let hp1 = personaje1.calcularHitPoint();
     let hp2 = personaje2.calcularHitPoint();
 
