@@ -1,0 +1,16 @@
+a {
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+#tabla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 10px;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 0px;
+    margin-top: 10px;
+}
