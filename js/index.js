@@ -1,6 +1,9 @@
 const personajes = [
     new Personaje(
+        1,
+        "personaje.jpeg",
         "Pablo",
+        "Programador",
         3,
         20,
         20,
@@ -11,7 +14,10 @@ const personajes = [
         20
     ),
     new Personaje(
+        2,
+        "personaje.jpeg",
         "David",
+        "Programador",
         3,
         20,
         20,
@@ -22,45 +28,105 @@ const personajes = [
         20
     ),
 ]
-
+let id = 3;
 const catalogoPersonajes = new CatalogoPersonajes(personajes);
 console.log("PERSONAJES ORIGINALES", catalogoPersonajes.personajes)
 
-const cantidad = Number(prompt(`INGRESE CANTIDAD DE PERSONAJES`));
-
-for (let i = 0; i < cantidad; i++) {
-    alert(`DATOS DEL PERSONAJE NUMERO ${i + 1}`);
-    personajes.push(crearPersonaje());
-}
-
-let nombre1 = prompt(`INGRESE NOMBRE DEL PRIMER LUCHADOR`);
-let personaje1 = personajes.find(x => x.nombre === nombre1);
-while(personaje1 == undefined){
-    alert("EL NOMBRE INGRESADO NO PERTENECE A NINGUN PERSONAJE");
-    nombre1 = prompt(`INGRESE NOMBRE DEL PRIMER LUCHADOR`);
-    personaje1 = personajes.find(x => x.nombre === nombre1);
-}
-
-let nombre2 = prompt(`INGRESE NOMBRE DEL SEGUNDO LUCHADOR`);
-let personaje2 = personajes.find(x => x.nombre === nombre2);
-while(personaje2 == undefined){
-    alert("EL NOMBRE INGRESADO NO PERTENECE A NINGUN PERSONAJE");
-    nombre2 = prompt(`INGRESE NOMBRE DEL SEGUNDO LUCHADOR`);
-    personaje2 = personajes.find(x => x.nombre === nombre2);
-}
-
-resolucionDeConflictosLaborales(personaje1, personaje2); // :)
 listarPersonajes();
 
+let unoALaVez = false;
+const btnMas = document.getElementById("mas");
+btnMas.onclick = () => {
+    if (unoALaVez == false) {
+        unoALaVez = true;
+        nuevoPersonaje();
+        const formulario = document.getElementById("formulario");
+        formulario.addEventListener("submit", function (e) {
+            const nombre = document.getElementById("nombre");
+            const clase = document.getElementById("clase");
+            const nivel = document.getElementById("nivel");
+            const fuerza = document.getElementById("fuerza");
+            const destreza = document.getElementById("destreza");
+            const constitucion = document.getElementById("constitucion");
+            const inteligencia = document.getElementById("inteligencia");
+            const sabiduria = document.getElementById("sabiduria");
+            const carisma = document.getElementById("carisma");
+            const danio = document.getElementById("danio");
+            if (nombre.value == "" || clase.value == "" || nivel.value == "" || fuerza.value == "" || destreza.value == "" || constitucion.value == "" || inteligencia.value == "" || sabiduria.value == "" || carisma.value == "" || danio.value == "")
+                e.preventDefault();
+            else {
+                catalogoPersonajes.agregarPersonaje(new Personaje(id++, "avatar.png", nombre.value, clase.value, nivel.value, fuerza.value, destreza.value, constitucion.value, inteligencia.value, sabiduria.value, carisma.value, danio.value));
+                listarPersonajes();
+                unoALaVez = false;
+            }
+        });
+    }
+};
+
+
+const btnLuchar = document.getElementById("luchar");
+btnLuchar.onclick = () => {
+    selecionar();
+}
+
+function selecionar() {
+    let nombre1 = prompt(`INGRESE NOMBRE DEL PRIMER LUCHADOR`);
+    let personaje1 = personajes.find(x => x.nombre === nombre1);
+    while (personaje1 == undefined) {
+        alert("EL NOMBRE INGRESADO NO PERTENECE A NINGUN PERSONAJE");
+        nombre1 = prompt(`INGRESE NOMBRE DEL PRIMER LUCHADOR`);
+        personaje1 = personajes.find(x => x.nombre === nombre1);
+    }
+
+    let nombre2 = prompt(`INGRESE NOMBRE DEL SEGUNDO LUCHADOR`);
+    let personaje2 = personajes.find(x => x.nombre === nombre2);
+    while (personaje2 == undefined) {
+        alert("EL NOMBRE INGRESADO NO PERTENECE A NINGUN PERSONAJE");
+        nombre2 = prompt(`INGRESE NOMBRE DEL SEGUNDO LUCHADOR`);
+        personaje2 = personajes.find(x => x.nombre === nombre2);
+    }
+    resolucionDeConflictosLaborales(personaje1, personaje2); // :)
+}
+
+function nuevoPersonaje() {
+    const nodoTabla = document.getElementById("tabla");
+    const tablaElemento = document.createElement("div");
+    tablaElemento.innerHTML = `<div class="card" style="width: 100%;">
+                                        <img src="../imagenes/avatar.png" class="card-img-top" alt="imagen del personaje">
+                                        <form id="formulario">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Nombre: <input id="nombre" type="text" placeholder="Nombre"></h5>
+                                                <p class="card-text">Clase: <input id="clase" type="text" placeholder="Clase"></p>
+                                                <p class="card-text">Nivel: <input id="nivel" type="number" placeholder="Nivel"></p>
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">Fuerza: <input id="fuerza" type="number" placeholder="Fuerza"></li>
+                                                <li class="list-group-item">Destreza: <input id="destreza" type="number" placeholder="Destreza"></li>
+                                                <li class="list-group-item">Constitucion: <input id="constitucion" type="number" placeholder="Constitucion"></li>
+                                                <li class="list-group-item">Inteligencia: <input id="inteligencia" type="number" placeholder="Inteligencia"></li>
+                                                <li class="list-group-item">Sabiduria: <input id="sabiduria" type="number" placeholder="Sabiduria"></li>
+                                                <li class="list-group-item">Carisma: <input id="carisma" type="number" placeholder="Carisma"></li>
+                                                <li class="list-group-item">Danio: <input id="danio" type="number" placeholder="Danio"></li>
+                                            </ul>
+                                            <div class="card-body">
+                                                <input id="aceptar" class="btn btn-primary" type="submit" value="Aceptar">
+                                            </div>
+                                        </form>
+                                    </div>`;
+
+    nodoTabla.appendChild(tablaElemento);
+}
+
 function listarPersonajes() {
-    const nodoTabla = document.getElementById("tabla")
-    catalogoPersonajes.personajes.forEach((personaje)=>{
-        const tablaElemento = document.createElement("div")
-        tablaElemento.innerHTML=`<div class="card" style="width: 18rem;">
-                                    <img src="../imagenes/personaje.jpeg" class="card-img-top" alt="imagen del personaje">
+    const nodoTabla = document.getElementById("tabla");
+    nodoTabla.innerHTML = "";
+    catalogoPersonajes.personajes.forEach((personaje) => {
+        const tablaElemento = document.createElement("div");
+        tablaElemento.innerHTML = `<div class="card" style="width: 100%;">
+                                    <img src="../imagenes/${personaje.imagen}" class="card-img-top" alt="imagen del personaje">
                                     <div class="card-body">
                                         <h5 class="card-title">${personaje.nombre}</h5>
-                                        <p class="card-text">Clase: Programador</p>
+                                        <p class="card-text">Clase: ${personaje.clase}</p>
                                         <p class="card-text">Nivel: ${personaje.nivel}</p>
                                     </div>
                                     <ul class="list-group list-group-flush">
@@ -73,28 +139,12 @@ function listarPersonajes() {
                                         <li class="list-group-item">Danio: ${personaje.danio}</li>
                                     </ul>
                                     <div class="card-body">
-                                        <a href="#" class="btn btn-primary">Modificar</a>
-                                        <a href="#" class="btn btn-primary">Selecionar</a>
+                                        <a id="modificar${personaje.id}" class="btn btn-primary modificar">Modificar</a>
                                     </div>
-                                </div>`
-        
+                                </div>`;
+
         nodoTabla.appendChild(tablaElemento);
     })
-}
-
-function crearPersonaje() {
-    const nombre = prompt(`INGRESE NOMBRE DEL PERSONAJE`);
-    const nivel = Number(prompt(`INGRESE NIVEL DEL PERSONAJE`));
-    const fuerza = Number(prompt(`INGRESE LA FUERZA DEL PERSONAJE`));
-    const destreza = Number(prompt(`INGRESE LA DESTREZA DEL PERSONAJE`));
-    const constitucion = Number(prompt(`INGRESE LA CONSTITUCION DEL PERSONAJE`));
-    const inteligencia = Number(prompt(`INGRESE LA INTELIGENCIA DEL PERSONAJE`));
-    const sabiduria = Number(prompt(`INGRESE LA SABIDURIA DEL PERSONAJE`));
-    const carisma = Number(prompt(`INGRESE LA CARISMA DEL PERSONAJE`));
-    const danio = Number(prompt(`INGRESE EL DANIO DEL PERSONAJE`));
-
-    let personaje = new Personaje(nombre, nivel, fuerza, destreza, constitucion, inteligencia, sabiduria, carisma, danio);
-    return personaje;
 }
 
 function getRandom(min, max) {
