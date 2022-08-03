@@ -1,6 +1,9 @@
 class Personaje {
-    constructor(nombre, nivel, fuerza, destreza, constitucion, inteligencia, sabiduria, carisma, danio) {
+    constructor(id, imagen, nombre, clase, nivel, fuerza, destreza, constitucion, inteligencia, sabiduria, carisma, danio) {
+        this.id = id;
+        this.imagen = imagen;
         this.nombre = nombre;
+        this.clase = clase;
         this.nivel = nivel;
         this.fuerza = fuerza;
         this.destreza = destreza;
